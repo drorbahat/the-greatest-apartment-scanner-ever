@@ -18,12 +18,13 @@ pwd && ls AGENTS.md && git branch
 ### Step 1 — Setup + Chromium (no user input needed)
 ```bash
 bash setup.sh
-./scripts/scanner-chromium &
+make chromium-visible     # if the machine has a desktop/window system
+# or: make chromium-headless   # server/container mode
 sleep 2
 curl -s http://127.0.0.1:9223/json/version
 ```
 
-Chromium CDP MUST be running before Step 2. If it does not start, fix that before continuing.
+Chromium CDP MUST be running before Step 2. Prefer `make chromium-visible` on a real desktop so the user can solve Yad2/Facebook CAPTCHA in the visible scanner browser. If it does not start, fix that before continuing.
 
 ### Step 2 — Show status dashboard
 ```bash

@@ -1,6 +1,15 @@
 #!/usr/bin/env bash
 # Launch Chromium with Chrome DevTools Protocol (CDP) on the configured port.
 # Auto-detects the chromium binary from common locations.
+#
+# Default behavior:
+#   - If a graphical DISPLAY exists: open a visible Chromium window.
+#   - If no DISPLAY exists: run headless.
+#
+# Override:
+#   SCANNER_HEADLESS=1 ./scripts/scanner-chromium   # force headless
+#   SCANNER_HEADLESS=0 ./scripts/scanner-chromium   # force visible window
+#
 # Usage: ./scripts/scanner-chromium [extra chromium flags...]
 set -euo pipefail
 
@@ -31,20 +40,41 @@ if [ -z "$CHROMIUM_BIN" ]; then
     exit 1
 fi
 
-echo "→ Chromium: $CHROMIUM_BIN (CDP port $PORT)" >&2
-mkdir -p "$PROFILE"
+# ── Headless/visible mode ─────────────────────────────────────────────────
+# If the machine has a desktop session, prefer visible mode so a human can solve
+# Yad2/Facebook CAPTCHA in the actual scanner browser. On servers/containers,
+# fall back to headless.
+HEADLESS="${SCANNER_HEADLESS:-auto}"
+if [ "$HEADLESS" = "auto" ]; then
+    if [ -n "${DISPLAY:-}" ] || [ -n "${WAYLAND_DISPLAY:-}" ]; then
+        HEADLESS="0"
+    else
+        HEADLESS="1"
+    fi
+fi
 
-exec "$CHROMIUM_BIN" \
-    --no-first-run \
-    --lang=he-IL \
-    --disable-dev-shm-usage \
-    --password-store=basic \
-    --user-data-dir="$PROFILE" \
-    --remote-debugging-port="$PORT" \
-    --disable-gpu \
-    --disable-software-rasterizer \
-    --disable-features=IsolateOrigins,site-per-process \
-    --disable-site-isolation-trials \
-    --no-sandbox \
-    --headless=new \
-    "$@"
+ARGS=(
+    --no-first-run
+    --lang=he-IL
+    --disable-dev-shm-usage
+    --password-store=basic
+    --user-data-dir="$PROFILE"
+    --remote-debugging-port="$PORT"
+    --disable-gpu
+    --disable-software-rasterizer
+    --disable-features=IsolateOrigins,site-per-process
+    --disable-site-isolation-trials
+    --no-sandbox
+)
+
+if [ "$HEADLESS" = "1" ] || [ "$HEADLESS" = "true" ]; then
+    echo "→ Chromium: $CHROMIUM_BIN (CDP port $PORT, headless)" >&2
+    ARGS+=(--headless=new)
+else
+    echo "→ Chromium: $CHROMIUM_BIN (CDP port $PORT, visible window)" >&2
+    # Open a blank page so the user immediately sees the scanner browser.
+    ARGS+=(about:blank)
+fi
+
+mkdir -p "$PROFILE"
+exec "$CHROMIUM_BIN" "${ARGS[@]}" "$@"

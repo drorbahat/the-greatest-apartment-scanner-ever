@@ -1,7 +1,7 @@
 # Apartment Scanner — Makefile
 # Usage: make <target>
 
-.PHONY: test check scan status report setup clean help
+.PHONY: test check scan status report setup clean help chromium chromium-visible chromium-headless chromium-status
 
 # ── Default ──────────────────────────────────────────────────────────────
 help:  ## Show this help
@@ -18,8 +18,14 @@ check:  ## Run smoke test — verify environment is ready
 	python3 scripts/smoke_test.py
 
 # ── Chromium ─────────────────────────────────────────────────────────────
-chromium:  ## Start Chromium with CDP (port 9223)
+chromium:  ## Start Chromium with CDP (visible if desktop exists, headless on server)
 	./scripts/scanner-chromium &
+
+chromium-visible:  ## Start visible Chromium window with CDP (best for CAPTCHA)
+	SCANNER_HEADLESS=0 ./scripts/scanner-chromium &
+
+chromium-headless:  ## Start headless Chromium with CDP (server/container mode)
+	SCANNER_HEADLESS=1 ./scripts/scanner-chromium &
 
 chromium-status:  ## Check if Chromium CDP is running
 	@curl -s http://127.0.0.1:9223/json/version | python3 -m json.tool || \

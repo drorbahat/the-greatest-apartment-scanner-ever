@@ -162,10 +162,20 @@ bash setup.sh          # או: pip install -r requirements.txt && mkdir -p data/
 
 **⚠️ Chromium חייב להיות רץ לפני שלב 2. אל תדלג.**
 
+אם יש למחשב מסך/דסקטופ — פתח חלון נראה:
+
 ```bash
-./scripts/scanner-chromium &
+make chromium-visible
 sleep 2
 curl -s http://127.0.0.1:9223/json/version  # וידוא שהוא רץ
+```
+
+אם זה שרת בלי מסך — הרץ headless:
+
+```bash
+make chromium-headless
+sleep 2
+curl -s http://127.0.0.1:9223/json/version
 ```
 
 אם Chromium לא עולה — תקן את הבעיה לפני שממשיכים.
