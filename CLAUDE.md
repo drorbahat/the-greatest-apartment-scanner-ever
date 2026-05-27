@@ -27,13 +27,42 @@ make check
 ```
 Present results as a clear dashboard. Don't bury the user in output.
 
-### Step 3 — Ask ALL questions at once
-Present these 4 questions simultaneously. Do NOT ask one at a time.
+### Step 3 — Ask ALL questions WITH explanation
 
-1. 🎯 **Criteria**: Area? Budget? Rooms? Move-in date? (defaults: Ramat Gan/Givatayim, ≤6500₪, 3 rooms, late July 2026)
-2. 🤖 **Telegram**: Bot token from @BotFather? (optional — reports stay local if skipped)
-3. 🍪 **Facebook**: Cookies JSON file? (optional — only public groups scanned if skipped)
-4. 🧠 **Gemini API**: Key? (optional — basic filtering only if skipped)
+Each question MUST include: **what it gives, what you lose without it, and how to get it.**
+
+Present all 4 at once. But if the user asks "what does that mean?" — expand on that specific item.
+
+**1. 🎯 Search Criteria** — Area, budget, rooms, move-in date. Defaults: Ramat Gan/Givatayim, ≤₪6,500, 3 rooms, late July 2026.
+
+**2. 🍪 Facebook Scanning**
+- **Gives**: Access to private Facebook groups where most real apartments are posted. Scanner joins 12+ groups, scrolls feeds, extracts listings.
+- **Without**: Yad2-only scanning (good but misses many listings).
+- **Needs**: A **separate** Facebook account (NOT your personal one — risk of block). Join 10–15 apartment groups. Export cookies.json from browser (Chrome extension: "Get cookies.txt"). Place in `data/facebook_cookies.json`.
+- **Warning**: ⚠️ Don't use your personal Facebook account. Automated browsing can trigger blocks.
+
+**3. 🧠 Gemini API (AI Triage)**
+- **Gives**: AI reads post content, understands context, extracts price/rooms/dates intelligently. Normalizes messy Hebrew text into structured data.
+- **Without**: Basic keyword filtering — works but less accurate, misses differently-worded listings.
+- **Needs**: Free API key from [Google AI Studio](https://aistudio.google.com/apikey) (1,500 requests/day free). 3 minutes to set up.
+- **Recommendation**: 💡 Worth enabling. The difference is like keyword search vs reading comprehension. Free.
+
+**4. 🤖 Telegram Bot**
+- **Gives**: Reports sent to your phone. Commands: `/scan`, `/report`, `/recent`. Auto notifications every hour.
+- **Without**: Reports stay as Markdown files in `artifacts/` — need computer access.
+- **Needs**: 2 minutes. Open [@BotFather](https://t.me/BotFather), send `/newbot`, get token. Give token to agent.
+- **Recommendation**: 💡 Most useful long-term. Reports on your phone, no computer needed.
+
+**Summary table to show user:**
+
+| Component | Value | Effort | Verdict |
+|-----------|-------|--------|---------|
+| Criteria | Personalization | 30 sec | ✅ Required |
+| Gemini API | Smart filtering | 3 min | 🟡 Recommended (free) |
+| Telegram | Mobile reports | 2 min | 🟡 Recommended |
+| Facebook | Private groups | 10 min | 🟠 Worth it |
+
+> 💬 Tell user: "Start with Yad2-only (2 min setup), add Gemini/Facebook/Telegram later. Each component is independent."
 
 ### Step 4 — Apply changes
 Only AFTER user answers everything:
