@@ -32,30 +32,41 @@ python3 scripts/full_apartment_scan.py finalize
 
 ## סקריפטים — מה כל אחד עושה
 
-| סקריפט | תפקיד |
-|---------|--------|
-| `full_apartment_scan.py` | אורקסטרטור ראשי — מריץ איסוף, מרכז, מפיק דוח |
-| `yad2_broad_search.py` | סורק את Yad2 דרך Chromium CDP (פורט 9223) |
-| `facebook_group_feed_scan.py` | סורק פיד של קבוצת פייסבוק |
-| `facebook_feed_multi_scan.py` | סורק מספר קבוצות פייסבוק במקביל |
-| `facebook_group_scan.py` | חיפוש בקבוצת פייסבוק לפי מילות מפתח |
-| `facebook_clean_posts.py` | מנקה ומבנה פוסטים גולמיים מפייסבוק |
-| `facebook_auto_triage.py` | טריאז' אוטומטי — זיהוי מודעות רלוונטיות |
-| `facebook_ai_triage_prepare.py` | הכנת מודעות לטריאז' AI |
-| `facebook_ai_triage_cache_update.py` | עדכון cache טריאז' אחרי סיווג |
-| `facebook_url_utils.py` | חילוץ וסיווג קישורים מפוסטים |
-| `evaluate_candidates.py` | ניקוד מועמדים לפי קריטריונים — **הליבה** |
-| `ai_normalize_listing.py` | נרמול מודעה באמצעות LLM |
-| `normalization_pipeline.py` | צינור הנרמול — הרצה על סט מודעות |
-| `llm_extract.py` | חילוץ שדות מטקסט חופשי באמצעות LLM |
-| `inject_cookies.py` | הזרקת עוגיות פייסבוק לכרום |
-| `scanner-chromium` | סקריפט launch לכרום עם CDP |
-| `apartment_db.py` | מסד נתונים לוקלי של דירות |
-| `events.py` | רישום אירועים (scan completed וכו') |
-| `evidence_pack.py` | אריזת ראיות לדירה |
-| `cron_load_results.py` | טעינת תוצאות למעקב |
-| `daily_scan.py` | הרצת סריקה יומית |
-| `scan_quality.py` | בדיקת איכות סריקה |
+**ליבת הסריקה:**
+- `full_apartment_scan.py` — אורקסטרטור ראשי: מריץ איסוף, מרכז, מפיק דוח
+- `yad2_broad_search.py` — סורק את Yad2 דרך Chromium CDP (פורט 9223)
+- `evaluate_candidates.py` — **הליבה** — ניקוד, סינון, דגלים אדומים, הפקת final_report.md
+
+**פייסבוק:**
+- `facebook_group_feed_scan.py` — סורק פיד של קבוצת פייסבוק (גלילה, פריסת פוסטים)
+- `facebook_feed_multi_scan.py` — סורק מספר קבוצות במקביל
+- `facebook_group_scan.py` — חיפוש בקבוצה לפי מילות מפתח (משלים)
+- `facebook_clean_posts.py` — מנקה ומבנה פוסטים גולמיים ← JSON + MD
+- `facebook_auto_triage.py` — טריאז' אוטומטי: זיהוי מודעות רלוונטיות
+- `facebook_ai_triage_prepare.py` — הכנת מודעות לטריאז' AI
+- `facebook_ai_triage_cache_update.py` — עדכון cache טריאז' אחרי סיווג
+- `facebook_url_utils.py` — חילוץ, נרמול וסיווג קישורים מפוסטים
+
+**AI / נרמול:**
+- `ai_normalize_listing.py` — נרמול מודעה באמצעות LLM (Gemini)
+- `llm_extract.py` — חילוץ שדות (מחיר, חדרים, כניסה) מטקסט חופשי
+- `normalization_pipeline.py` — צינור הנרמול: הרצה על סט מודעות + הפקת audit
+- `normalization_audit.py` — השוואת תוצאות נרמול מול evidence packs
+
+**תשתית:**
+- `apartment_db.py` — מסד נתונים SQLite של דירות (מעקב, dedup)
+- `user_rejections.py` — ניהול דירות שנפסלו (DB, סינון)
+- `events.py` — רישום אירועי סריקה (scan_completed, errors)
+- `evidence_pack.py` — אריזת ראיות לדירה (ללא LLM, דטרמיניסטי)
+- `scan_quality.py` — מדדי איכות סריקה (כיסוי, שלמות, אמינות)
+- `cron_load_results.py` — טעינת תוצאות אחרונות למעקב
+- `daily_scan.py` — הרצת סריקה יומית + טריאז' AI
+
+**תפעול:**
+- `smoke_test.py` — **בדיקת סביבה** — תלויות, Chromium, עוגיות, API keys
+- `inject_cookies.py` — הזרקת עוגיות פייסבוק ל-Chromium
+- `scanner-chromium` — סקריפט launch ל-Chromium עם CDP (פורט 9223)
+- `scrape_madlan_public.py` — סורק Madlan (מושבת — PerimeterX)
 
 ## צינור (Pipeline) — מה קורה בלחיצת run
 
@@ -123,14 +134,17 @@ full_apartment_scan.py run
 # 1. תלויות Python
 pip install -r requirements.txt
 
-# 2. הפעל Chromium ברקע
+# 2. בדיקת סביבה — מוודא שהכל מוכן
+python3 scripts/smoke_test.py
+
+# 3. הפעל Chromium ברקע
 ./scripts/scanner-chromium &
 # או בדוק שהוא רץ: curl -s http://127.0.0.1:9223/json/version
 
-# 3. הזרק עוגיות פייסבוק (אם יש)
+# 4. הזרק עוגיות פייסבוק (אם יש)
 python3 scripts/inject_cookies.py data/facebook_cookies.json
 
-# 4. סריקה!
+# 5. סריקה!
 python3 scripts/full_apartment_scan.py run
 ```
 

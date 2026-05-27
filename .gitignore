@@ -4,12 +4,18 @@ __pycache__/
 *.egg-info/
 .venv/
 venv/
+*.pyc
 
-# Runtime data (volume mounts)
+# Runtime data (volume mounts / local runs)
 data/artifacts/
 data/browser-profile/
 data/logs/
 data/*.log
+data/chat_id.txt
+data/apartments.db
+
+# But keep the cookies placeholder
+!data/facebook_cookies.json
 
 # Environment (contains secrets)
 .env
@@ -24,3 +30,9 @@ Thumbs.db
 # IDE
 .vscode/
 .idea/
+*.swp
+*.swo
+
+# Temp
+tmp/
+*.tmp
