@@ -15,17 +15,21 @@ When you receive this repo, follow this EXACT sequence. Do NOT skip steps or jum
 pwd && ls AGENTS.md && git branch
 ```
 
-### Step 1 — Setup (no user input needed)
+### Step 1 — Setup + Chromium (no user input needed)
 ```bash
 bash setup.sh
-./scripts/scanner-chromium &     # Start Chromium immediately
+./scripts/scanner-chromium &
+sleep 2
+curl -s http://127.0.0.1:9223/json/version
 ```
+
+Chromium CDP MUST be running before Step 2. If it does not start, fix that before continuing.
 
 ### Step 2 — Show status dashboard
 ```bash
 make check
 ```
-Present results as a clear dashboard. Don't bury the user in output.
+Present results as short bullet lists only. **NO TABLES. Tables are forbidden because Hebrew/RTL output becomes unreadable, especially on mobile.**
 
 ### Step 3 — Ask ALL questions WITH explanation
 
@@ -53,14 +57,23 @@ Present all 4 at once. But if the user asks "what does that mean?" — expand on
 - **Needs**: 2 minutes. Open [@BotFather](https://t.me/BotFather), send `/newbot`, get token. Give token to agent.
 - **Recommendation**: 💡 Most useful long-term. Reports on your phone, no computer needed.
 
-**Summary table to show user:**
+**Summary to show user — bullets only, no table:**
 
-| Component | Value | Effort | Verdict |
-|-----------|-------|--------|---------|
-| Criteria | Personalization | 30 sec | ✅ Required |
-| Gemini API | Smart filtering | 3 min | 🟡 Recommended (free) |
-| Telegram | Mobile reports | 2 min | 🟡 Recommended |
-| Facebook | Private groups | 10 min | 🟠 Worth it |
+```
+מה כדאי להגדיר?
+
+• קריטריונים — חובה, 30 שניות
+  אזור, תקציב, חדרים, תאריך כניסה.
+
+• Gemini API — מומלץ, חינם, 3 דקות
+  נותן סינון חכם במקום מילות מפתח.
+
+• Telegram — מומלץ, 2 דקות
+  שולח דוחות לנייד במקום להשאיר קבצים במחשב.
+
+• Facebook — שווה מאמץ, 10 דקות
+  נותן גישה לקבוצות סגורות. דורש חשבון פייסבוק נפרד, לא אישי.
+```
 
 > 💬 Tell user: "Start with Yad2-only (2 min setup), add Gemini/Facebook/Telegram later. Each component is independent."
 
@@ -110,10 +123,13 @@ make scan
 Tell user: "This takes 35-55 minutes. I'll update you when done."
 
 ### Anti-patterns (DON'T)
+- ❌ Use tables in Hebrew output. Never. Use bullets only.
 - ❌ Edit code BEFORE asking all 4 questions
 - ❌ Waste time on git log/history — repo is clean, just start
 - ❌ Ask "what do you want to do?" — TELL them the status and options
 - ❌ Assume technical knowledge — user may not know CDP, cookies, or API keys
+- ❌ Edit `Makefile` unless the user explicitly asks. It already works.
+- ❌ If the user asks for a quick Yad2 scan, do NOT write an implementation plan. Start Chromium, set criteria, run the scan, and report blockers plainly.
 
 ## Core Pipeline
 
