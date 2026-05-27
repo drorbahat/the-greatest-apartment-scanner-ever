@@ -1,0 +1,29 @@
+version: '3.8'
+
+services:
+  yogev:
+    build: .
+    container_name: yogev-scanner
+    restart: unless-stopped
+    volumes:
+      # Scan results (artifacts/) — must persist or they're lost on restart
+      - ./data/artifacts:/app/artifacts
+      # Browser profile (Facebook login session survives restarts)
+      - ./data/browser-profile:/app/data/browser-profile
+      # Cron & startup logs
+      - ./data/logs:/app/data/logs
+      # Facebook cookies (place this file before first run, see README)
+      - ./data/facebook_cookies.json:/app/data/facebook_cookies.json:ro
+      # Chat ID is auto-saved on /start. NOT mounted — on restart, just /start again.
+    env_file:
+      - .env
+    environment:
+      - YOGEV_PROJECT_ROOT=/app
+      - YOGEV_BROWSER_PORT=9223
+    shm_size: 256m
+    healthcheck:
+      test: ["CMD", "curl", "-sf", "http://127.0.0.1:9223/json/version"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 15s

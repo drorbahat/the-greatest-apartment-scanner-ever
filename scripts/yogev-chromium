@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+set -euo pipefail
+ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
+PROFILE="${YOGEV_BROWSER_PROFILE:-$ROOT/data/browser-profile}"
+PORT="${YOGEV_BROWSER_PORT:-9223}"
+mkdir -p "$PROFILE"
+exec /usr/bin/chromium \
+  --no-first-run \
+  --lang=he-IL \
+  --disable-dev-shm-usage \
+  --password-store=basic \
+  --user-data-dir="$PROFILE" \
+  --remote-debugging-port="$PORT" \
+  --disable-gpu \
+  --disable-software-rasterizer \
+  --disable-features=IsolateOrigins,site-per-process \
+  --disable-site-isolation-trials \
+  --no-sandbox \
+  --headless=new \
+  "$@"

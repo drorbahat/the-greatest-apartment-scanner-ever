@@ -1,0 +1,39 @@
+# Search criteria — documentation / reference
+# The actual filtering is hardcoded in evaluate_candidates.py
+# Edit this file to document your preferences, then update evaluate_candidates.py if needed.
+
+area:
+  primary:
+    - רמת גן
+    - גבעתיים
+  secondary:
+    - תל אביב (יד אליהו)
+    - בני ברק גבול רמת גן
+
+budget:
+  max_nis: 6500
+  preferred_nis: 6000
+
+rooms:
+  preferred: 3
+  acceptable_min: 2.5
+
+move_window:
+  target: "סוף יולי 2026"
+  too_early_flag: "כניסה לפני יולי דורשת גמישות"
+
+priorities:
+  - קרבה לרכבת הקלה או תחבורה טובה
+  - שקט יחסי
+  - מתאים לזוג ולעבודה/יצירה מהבית
+  - מזגן בסלון ובחדרים חשובים
+  - חוזה לטווח ארוך / אופציה להארכה
+
+red_flags:
+  - רטיבות / עובש / נזילות
+  - כניסה מיידית בלי גמישות
+  - רעש כבד מכביש ראשי
+  - דירה חשוכה מאוד
+  - אין מזגן בחדר שינה
+  - חוזה קצר בלבד
+  - מחיר לא תואם מצב/מיקום

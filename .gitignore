@@ -1,0 +1,26 @@
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.venv/
+venv/
+
+# Runtime data (volume mounts)
+data/artifacts/
+data/browser-profile/
+data/logs/
+data/*.log
+
+# Environment (contains secrets)
+.env
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Docker
+.docker/
+
+# IDE
+.vscode/
+.idea/

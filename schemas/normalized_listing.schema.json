@@ -1,0 +1,179 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "normalized_listing.schema.json",
+  "title": "Normalized Listing",
+  "description": "Canonical normalized listing object produced by the AI normalizer layer.",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "normalization_status",
+    "source",
+    "listing_id",
+    "content_hash",
+    "listing_type",
+    "broker_status",
+    "contract_type",
+    "half_room_status",
+    "features",
+    "red_flags",
+    "missing_questions",
+    "confidence",
+    "evidence_quotes"
+  ],
+  "properties": {
+    "schema_version": {
+      "type": "string",
+      "const": "1.0"
+    },
+    "normalization_status": {
+      "type": "string",
+      "enum": [
+        "ok",
+        "skipped_prefilter",
+        "skipped_cached",
+        "failed_llm",
+        "failed_invalid_json",
+        "failed_schema_validation",
+        "failed_no_backend"
+      ]
+    },
+    "normalization_error": {
+      "type": ["string", "null"]
+    },
+    "source": {
+      "type": "string",
+      "enum": ["Facebook", "Yad2", "Madlan", "unknown"]
+    },
+    "source_url": {
+      "type": ["string", "null"]
+    },
+    "listing_id": {
+      "type": "string"
+    },
+    "content_hash": {
+      "type": "string",
+      "description": "SHA-256 hash of normalized text content for cache invalidation"
+    },
+    "listing_type": {
+      "type": "string",
+      "enum": [
+        "rental_apartment",
+        "sublet",
+        "contract_transfer",
+        "roommate",
+        "sale",
+        "office",
+        "wanted",
+        "not_listing",
+        "unknown"
+      ]
+    },
+    "price_nis": {
+      "type": ["number", "null"]
+    },
+    "rooms": {
+      "type": ["number", "null"]
+    },
+    "sqm": {
+      "type": ["number", "null"]
+    },
+    "floor": {
+      "type": ["string", "null"]
+    },
+    "city": {
+      "type": ["string", "null"]
+    },
+    "neighborhood": {
+      "type": ["string", "null"]
+    },
+    "street": {
+      "type": ["string", "null"]
+    },
+    "entry_date": {
+      "type": ["string", "null"],
+      "description": "ISO-8601 date string (YYYY-MM-DD), or null if unknown"
+    },
+    "entry_raw": {
+      "type": ["string", "null"]
+    },
+    "entry_status_hint": {
+      "type": "string",
+      "enum": [
+        "ideal_july_august",
+        "june_maybe_if_later",
+        "immediate_hard_flag",
+        "too_early",
+        "may_bad",
+        "bad_sublet_end",
+        "unknown_entry"
+      ]
+    },
+    "broker_status": {
+      "type": "string",
+      "enum": [
+        "no_broker",
+        "broker",
+        "suspected_broker",
+        "unknown_broker"
+      ]
+    },
+    "contract_type": {
+      "type": "string",
+      "enum": [
+        "regular",
+        "sublet",
+        "contract_transfer",
+        "short_term",
+        "renewal_with_landlord",
+        "unknown"
+      ]
+    },
+    "half_room_status": {
+      "type": "string",
+      "enum": [
+        "closed",
+        "open",
+        "unclear",
+        "not_relevant"
+      ]
+    },
+    "features": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "red_flags": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "missing_questions": {
+      "type": "array",
+      "items": { "type": "string" },
+      "default": []
+    },
+    "confidence": {
+      "type": "object",
+      "additionalProperties": {
+        "type": "string",
+        "enum": ["high", "medium", "low", "unknown"]
+      }
+    },
+    "evidence_quotes": {
+      "type": "object",
+      "additionalProperties": { "type": "string" },
+      "description": "Maps field name to quoted text snippet from source"
+    },
+    "model": {
+      "type": ["object", "null"],
+      "properties": {
+        "provider": { "type": "string" },
+        "model": { "type": "string" }
+      }
+    },
+    "normalized_at": {
+      "type": ["string", "null"],
+      "description": "ISO-8601 timestamp"
+    }
+  }
+}
