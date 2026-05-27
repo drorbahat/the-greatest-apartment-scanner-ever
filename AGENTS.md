@@ -71,15 +71,56 @@ python3 scripts/full_apartment_scan.py finalize
 ## צינור (Pipeline) — מה קורה בלחיצת run
 
 ```
-full_apartment_scan.py run
-  ├── yad2_broad_search.py        → Yad2 listings (JSON)
-  ├── facebook_feed_multi_scan.py → Facebook raw posts (JSON)
-  ├── facebook_clean_posts.py     → Cleaned posts (JSON + MD)
-  ├── facebook_auto_triage.py     → AI triage (אופציונלי)
-  │     └── llm_extract.py        → LLM field extraction
-  ├── normalize (אופציונלי)       → ai_normalize_listing.py
-  └── evaluate_candidates.py      → final_report.md + state.json
+make scan  ← או: python3 scripts/full_apartment_scan.py run
 ```
+
+**זמנים צפויים** (תלוי בחיבור, במספר המודעות, ובכמה קבוצות פייסבוק):
+
+| שלב | זמן משוער |
+|------|-----------|
+| Yad2 — סריקת מודעות + חילוץ פרטים | 3–7 דקות |
+| Facebook — סריקת פידים (12+ קבוצות) | 30–40 דקות |
+| Facebook — ניקוי + טריאז' | 1–3 דקות |
+| AI נרמול (אופציונלי, תלוי API) | 2–5 דקות |
+| הפקת דוח + ניקוד | < 1 דקה |
+| **סה"כ** | **35–55 דקות** |
+
+> ⏱️ **אל תדאג אם הסריקה לוקחת 40 דקות — זה נורמלי.** היא סורקת עשרות עמודים.
+> הסריקה כותבת `state.json` תוך כדי ריצה. אפשר לבדוק התקדמות עם `make status`.
+
+### flow של הרצה
+
+```
+python3 scripts/full_apartment_scan.py run
+  ├── Yad2: yad2_broad_search.py       ← מאתר מודעות, מחלץ פרטים, שומר JSON
+  ├── Facebook: facebook_feed_multi_scan.py ← גולל פידים, מחלץ פוסטים
+  ├── Facebook: facebook_clean_posts.py ← מנקה, בונה JSON מובנה + MD
+  ├── Facebook: facebook_auto_triage.py ← מסווג מודעות (צריך LLM)
+  │     └── llm_extract.py             ← חילוץ שדות מטקסט חופשי
+  ├── (אופציונלי) ai_normalize_listing.py ← נרמול LLM
+  └── evaluate_candidates.py           ← ניקוד + final_report.md
+```
+
+### פקודות ניהול
+
+```bash
+make scan               # סריקה מלאה
+make status             # מצב הריצה הנוכחית
+python3 scripts/full_apartment_scan.py resume --run-dir <path>  # המשך סריקה שנקטעה
+python3 scripts/full_apartment_scan.py finalize  # סגור סריקה אחרי טריאז'
+```
+
+> 💡 **resume**: אם הסריקה נקטעה (Chromium נסגר, חשמל, וכו') — אפשר להמשיך מאותה נקודה עם `resume`. הסקריפט מדלג על שלבים שכבר הושלמו.
+
+## פורמט הדוח (final_report.md)
+
+דוגמה חיה: [`examples/final_report.md`](examples/final_report.md)
+
+הדוח כולל:
+- **סיכום**: כמה מודעות נסרקו, כמה עברו סינון
+- **מועמדים מובילים**: 3–7 דירות עם ציון, מחיר, חדרים, כניסה, דגלים
+- **טבלת דגלים**: קרוס-רפרנס בין מועמדים לדגלים אדומים
+- **שאלות לבירור**: מה לשאול את בעל הדירה לפני ביקור
 
 ## קריטריונים (מוגדרים ב-criteria.yaml)
 

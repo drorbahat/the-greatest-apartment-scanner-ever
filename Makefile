@@ -36,6 +36,13 @@ status:  ## Check scan status
 finalize:  ## Finalize scan after AI triage
 	python3 scripts/full_apartment_scan.py finalize
 
+test-scan:  ## Quick connectivity test (no Facebook, verify Yad2+Chromium works)
+	@echo "→ Testing Chromium CDP..."
+	@curl -sf http://127.0.0.1:9223/json/version > /dev/null && echo "  ✅ Chromium CDP alive" || { echo "  ❌ Chromium not running. Run: make chromium"; exit 1; }
+	@echo "→ Testing Python imports..."
+	@python3 -c "import sys; sys.path.insert(0,'scripts'); from yad2_broad_search import connect_browser; print('  ✅ yad2_broad_search importable')"
+	@echo "→ All connectivity checks passed (full scan not run)."
+
 # ── Reports ──────────────────────────────────────────────────────────────
 report:  ## Show latest scan report
 	@ls -t artifacts/full_scan_runs/*/final_report.md 2>/dev/null | head -1 | xargs cat || \
