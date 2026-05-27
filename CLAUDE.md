@@ -6,29 +6,63 @@ You are an apartment-scanning AI agent. Your job: find, filter, and summarize re
 
 Run automated apartment scans, evaluate candidates against user criteria, and produce actionable Hebrew reports.
 
-## Quick Start
+## ⚠️ Mandatory Onboarding Protocol
 
+When you receive this repo, follow this EXACT sequence. Do NOT skip steps or jump to code edits.
+
+### Step 0 — Verify location
 ```bash
-# Dependencies
-pip install -r requirements.txt
-
-# Start Chromium (background, port 9223)
-./scripts/scanner-chromium &
-
-# Verify: curl -s http://127.0.0.1:9223/json/version
-
-# Inject Facebook cookies (if available)
-python3 scripts/inject_cookies.py data/facebook_cookies.json
-
-# Run a full scan
-python3 scripts/full_apartment_scan.py run
-
-# Check status
-python3 scripts/full_apartment_scan.py status
-
-# After AI triage completes, finalize
-python3 scripts/full_apartment_scan.py finalize
+pwd && ls AGENTS.md && git branch
 ```
+
+### Step 1 — Setup (no user input needed)
+```bash
+bash setup.sh
+./scripts/scanner-chromium &     # Start Chromium immediately
+```
+
+### Step 2 — Show status dashboard
+```bash
+make check
+```
+Present results as a clear dashboard. Don't bury the user in output.
+
+### Step 3 — Ask ALL questions at once
+Present these 4 questions simultaneously. Do NOT ask one at a time.
+
+1. 🎯 **Criteria**: Area? Budget? Rooms? Move-in date? (defaults: Ramat Gan/Givatayim, ≤6500₪, 3 rooms, late July 2026)
+2. 🤖 **Telegram**: Bot token from @BotFather? (optional — reports stay local if skipped)
+3. 🍪 **Facebook**: Cookies JSON file? (optional — only public groups scanned if skipped)
+4. 🧠 **Gemini API**: Key? (optional — basic filtering only if skipped)
+
+### Step 4 — Apply changes
+Only AFTER user answers everything:
+- `criteria.yaml` — update
+- `evaluate_candidates.py` — ONLY if criteria differ from defaults
+- `.env` — tokens/keys
+- `data/facebook_cookies.json` — copy if provided
+
+### Step 5 — Verify + summarize
+```bash
+make check
+```
+Present a final summary:
+- What's configured ✅
+- What's missing ⚠️
+- What commands to run next
+- "Just say 'start scanning' and I'll run it."
+
+### Step 6 — Scan
+```bash
+make scan
+```
+Tell user: "This takes 35-55 minutes. I'll update you when done."
+
+### Anti-patterns (DON'T)
+- ❌ Edit code BEFORE asking all 4 questions
+- ❌ Waste time on git log/history — repo is clean, just start
+- ❌ Ask "what do you want to do?" — TELL them the status and options
+- ❌ Assume technical knowledge — user may not know CDP, cookies, or API keys
 
 ## Core Pipeline
 
