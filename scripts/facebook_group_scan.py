@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Read-only Facebook group scanner for Yogev apartment research.
+"""Read-only Facebook group scanner for Apartment Scanner apartment research.
 
 Uses the already-open dedicated Chromium profile/CDP session. It does not join groups,
 post, comment, message, or bypass access controls. If Facebook asks for human input,

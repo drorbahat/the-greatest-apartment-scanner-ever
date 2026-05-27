@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
-"""Scrape Madlan public apartment listings for Yogev.
+"""Scrape Madlan public apartment listings for Apartment Scanner.
 
-Uses the visible Yogev Chromium session via CDP. When Madlan asks for
+Uses the visible Chromium session via CDP. When Madlan asks for
 verification, the scraper stops detail enrichment and leaves a tab open so Dror
 can solve the CAPTCHA manually; it does not try to bypass the challenge.
 Falls back to plain urllib if CDP is not available.
@@ -864,7 +864,7 @@ def _save_results(pages, all_items, candidates, all_blocked, blocked_pages):
     alert = None
     if enrichment.get('human_action_required'):
         alert = (
-            'Madlan requires manual verification — solve CAPTCHA in the open Yogev browser tab, '
+            'Madlan requires manual verification — solve CAPTCHA in the open browser tab, '
             'then run: python3 scripts/scrape_madlan_public.py clear-block-state'
         )
     out = {

@@ -171,7 +171,7 @@ def _madlan_status_for_cron(status, manifest):
         if human_action:
             return (
                 "⚠️ מדלן דורש אימות ידני — "
-                "פתור CAPTCHA בלשונית הפתוחה בדפדפן יוגב. "
+                "פתור CAPTCHA בלשונית הפתוחה בדפדפן. "
                 "אחרי הפתרון אפשר לנקות cooldown עם: "
                 "python3 scripts/scrape_madlan_public.py clear-block-state"
             )

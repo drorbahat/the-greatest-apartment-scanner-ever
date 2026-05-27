@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""LLM-based apartment listing extractor for Yogev scanner.
+"""LLM-based apartment listing extractor for Apartment Scanner scanner.
 
 Supports multiple backends:
   - gemini-3.1-flash-lite-preview (default, fast, cheap)
@@ -23,7 +23,7 @@ import time
 import logging
 from typing import Optional
 
-log = logging.getLogger('yogev.llm')
+log = logging.getLogger('scanner.llm')
 
 # ---------------------------------------------------------------------------
 # Config — auto-select best available backend

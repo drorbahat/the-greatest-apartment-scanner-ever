@@ -74,7 +74,7 @@ def load_prompt(prompt_path: pathlib.Path | str | None = None) -> str:
 
 
 def _default_prompt() -> str:
-    return """You are Yogev's apartment listing normalizer.
+    return """you are an apartment's apartment listing normalizer.
 You are not the final evaluator.
 Your job is to translate evidence into strict JSON.
 

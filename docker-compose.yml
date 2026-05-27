@@ -1,9 +1,9 @@
 version: '3.8'
 
 services:
-  yogev:
+  scanner:
     build: .
-    container_name: yogev-scanner
+    container_name: apartment-scanner
     restart: unless-stopped
     volumes:
       # Scan results (artifacts/) — must persist or they're lost on restart

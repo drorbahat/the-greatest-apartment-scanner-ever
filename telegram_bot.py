@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-Yogev Telegram Bot — standalone polling bot for apartment scan management.
+Apartment Scanner Bot — standalone polling bot for apartment scan management.
 
 Interactive commands:
   /start   — welcome & setup
@@ -33,7 +33,7 @@ logging.basicConfig(
     level=logging.INFO,
     format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
 )
-log = logging.getLogger("yogev-bot")
+log = logging.getLogger("scanner-bot")
 
 # ── Paths ──────────────────────────────────────────────────────────────────
 PROJECT_ROOT = pathlib.Path(__file__).resolve().parent
@@ -157,7 +157,7 @@ def _format_candidate(c: dict[str, Any]) -> str:
 def cmd_start(chat_id: str) -> str:
     _save_chat_id(chat_id)
     return (
-        "👋 ברוכים הבאים ליוגב — סורק נדל״ן אוטומטי!\n\n"
+        "👋 ברוכים הבאים לסורק דירות אוטומטי!\n\n"
         "פקודות:\n"
         "/scan — הפעל סריקה עכשיו\n"
         "/status — מצב נוכחי\n"
@@ -263,7 +263,7 @@ def cmd_scan() -> str:
 
 def cmd_help() -> str:
     return (
-        "🤖 <b>יוגב — סורק נדל״ן</b>\n\n"
+        "🤖 <b>סורק דירות</b>\n\n"
         "פקודות:\n"
         "/scan — הפעל סריקת דירות עכשיו\n"
         "/status — מצב נוכחי\n"

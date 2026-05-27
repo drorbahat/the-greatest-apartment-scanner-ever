@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Simple robust apartment observations database for Yogev.
+"""Simple robust apartment observations database for Apartment Scanner.
 
 Design principle: every listing appearance is an observation. We only dedupe by
 exact run_id + URL/source key; no fuzzy matching and no pretending different URLs

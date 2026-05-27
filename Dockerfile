@@ -21,7 +21,7 @@ RUN pip install --no-cache-dir -r requirements.txt
 COPY . .
 
 # Make chromium launcher executable
-RUN chmod +x scripts/yogev-chromium 2>/dev/null || true
+RUN chmod +x scripts/scanner-chromium 2>/dev/null || true
 
 # Volume for persistent data
 VOLUME /app/data

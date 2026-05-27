@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Reliable full apartment scan orchestrator for Yogev.
+"""Reliable full apartment scan orchestrator for Apartment Scanner.
 
 This script is the durable, evidence-based wrapper around the individual source
 scanners. It writes a state file while running, a manifest at the end of the
@@ -252,9 +252,9 @@ def ensure_browser(state: RunState, log_dir: pathlib.Path, env: dict[str, str]) 
         return
 
     chromium_log = log_dir / "chromium.log"
-    append_log(chromium_log, f"starting Yogev Chromium at {now_iso()}")
+    append_log(chromium_log, f"starting Chromium at {now_iso()}")
     subprocess.Popen(
-        [str(ROOT / "scripts" / "yogev-chromium")],
+        [str(ROOT / "scripts" / "scanner-chromium")],
         cwd=str(ROOT),
         env=env,
         stdout=chromium_log.open("a", encoding="utf-8"),
@@ -385,7 +385,7 @@ def run_collection(args: argparse.Namespace) -> pathlib.Path:
             blocked_url=block_info.get("url", block_info.get("blocked_href", "")),
             block_type=block_info.get("block_type", "unknown"),
             resume_cmd=resume_cmd,
-            instruction="Open the Yogev browser, solve the CAPTCHA/block at the blocked URL, then run resume_cmd",
+            instruction="Open the browser, solve the CAPTCHA/block at the blocked URL, then run resume_cmd",
         )
         _emit_event(
             "step_blocked",

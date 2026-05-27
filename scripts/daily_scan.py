@@ -313,7 +313,7 @@ def daily_run(scrolls=15, delay=2.6, model=DEFAULT_MODEL, skip_ai=False, use_llm
     timestamp = start.strftime('%Y%m%d_%H%M%S')
 
     print("=" * 60, flush=True)
-    print(f"Yogev Daily Scan Pipeline - {start.strftime('%Y-%m-%d %H:%M:%S')}", flush=True)
+    print(f"Daily Scan Pipeline - {start.strftime('%Y-%m-%d %H:%M:%S')}", flush=True)
     print("=" * 60, flush=True)
 
     try:

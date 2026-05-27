@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -e
 
-echo "=== Yogev Scanner Starting ==="
+echo "=== Apartment Scanner Starting ==="
 
 # Ensure data directories exist (volume mounts may not auto-create)
 mkdir -p /app/artifacts /app/artifacts/full_scan_runs /app/data/logs /app/data/browser-profile

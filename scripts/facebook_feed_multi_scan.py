@@ -5,7 +5,7 @@ from datetime import datetime
 from facebook_group_feed_scan import scan_feed
 from facebook_group_scan import close_page
 
-log = logging.getLogger('yogev.multi')
+log = logging.getLogger('scanner.multi')
 
 # --- LLM Enhancement ---
 # After regex extraction, run LLM to fill in missing fields.

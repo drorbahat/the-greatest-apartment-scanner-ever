@@ -1,4 +1,4 @@
-# 🏠 Yogev Apartment Scanner
+# 🏠 Apartment Scanner
 
 בוט טלגרם אוטומטי לסריקת דירות להשכרה מ-Yad2 וקבוצות פייסבוק.
 
@@ -20,8 +20,8 @@
 
 ```bash
 # 1. clone
-git clone https://github.com/YOUR_USER/yogev-scanner.git
-cd yogev-scanner
+git clone https://github.com/YOUR_USER/apartment-scanner.git
+cd apartment-scanner
 
 # 2. צור קובץ .env
 cp .env.example .env
@@ -105,7 +105,7 @@ docker compose up -d
 
 ```bash
 # כנס לקונטיינר
-docker exec -it yogev-scanner /bin/bash
+docker exec -it apartment-scanner /bin/bash
 
 # הפעל כרום עם ממשק (צריך X11)
 # או פשוט בדוק שהעוגיות עובדות
@@ -153,7 +153,7 @@ GEMINI_API_KEY=AIzaSy...                  # אופציונלי — העשרת מ
 ## 🏗 מבנה התיקיות
 
 ```
-yogev-scanner/
+apartment-scanner/
 ├── scripts/                   # סקריפטים של סריקה
 │   ├── full_apartment_scan.py # אורקסטרטור ראשי
 │   ├── yad2_broad_search.py   # סורק Yad2
@@ -180,13 +180,13 @@ yogev-scanner/
 
 ### "הבוט לא עונה"
 ```bash
-docker compose logs yogev     # בדוק שהבוט רץ
+docker compose logs scanner     # בדוק שהבוט רץ
 # ואז בטלגרם: /start
 ```
 
 ### "הסריקה לא מתחילה"
 ```bash
-docker compose exec yogev-scanner python3 scripts/full_apartment_scan.py status
+docker compose exec apartment-scanner python3 scripts/full_apartment_scan.py status
 ```
 
 ### "אין תוצאות מפייסבוק"
