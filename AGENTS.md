@@ -175,6 +175,46 @@ cp .env.example .env   # ערוך: TELEGRAM_BOT_TOKEN (אם רוצים בוט)
 docker compose up -d    # מרים Chromium + cron + בוט טלגרם
 ```
 
+## תקלות נפוצות
+
+### Chromium CDP לא זמין (port 9223)
+```bash
+# בדוק אם רץ
+curl -s http://127.0.0.1:9223/json/version
+
+# אם לא — הפעל
+./scripts/scanner-chromium &
+
+# אם אין chromium — התקן
+apt install chromium-browser
+```
+
+### סריקת Yad2 לא מחזירה תוצאות
+- Chromium חייב להיות רץ **לפני** הסריקה
+- נסה להריץ ידנית: `python3 scripts/yad2_broad_search.py`
+- Yad2 לפעמים דורש Captcha — במקרה זה, פתח את `http://127.0.0.1:9223` בדפדפן ופתור
+
+### סריקת פייסבוק ריקה
+- עוגיות פגו — ייצא מחדש מ-Facebook
+- בדוק: `python3 scripts/smoke_test.py` ← "Facebook cookies"
+- נסה להזריק מחדש: `python3 scripts/inject_cookies.py data/facebook_cookies.json`
+
+### טריאז' AI לא עובד
+- וודא ש-`GEMINI_API_KEY` מוגדר
+- בדוק: `python3 scripts/smoke_test.py` ← "GEMINI_API_KEY"
+- בלי API key — השתמש בטריאז' בסיסי (ללא LLM)
+
+### מודול חסר / ImportError
+```bash
+pip install -r requirements.txt
+python3 scripts/smoke_test.py  # יגיד לך מה חסר
+```
+
+### Permission denied על data/
+```bash
+sudo chown -R $(whoami) data/
+```
+
 ## הערות
 
 - **Madlan** — מושבת לצמיתות (PerimeterX חוסם).
