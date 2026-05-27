@@ -1,6 +1,17 @@
-# Search criteria — documentation / reference
-# The actual filtering is hardcoded in evaluate_candidates.py
-# Edit this file to document your preferences, then update evaluate_candidates.py if needed.
+# ═══════════════════════════════════════════════════════════════════════════
+# Search Criteria — DOCUMENTATION ONLY
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# IMPORTANT: This file documents your preferences, but the actual filtering
+# logic lives in evaluate_candidates.py. Changing this file alone does NOT
+# change the scanner behavior.
+#
+# To actually change criteria:
+#   1. Edit this file to document what you want
+#   2. Edit evaluate_candidates.py to implement the changes
+#   3. Or: tell your AI agent what to change and it handles both
+#
+# ═══════════════════════════════════════════════════════════════════════════
 
 area:
   primary:
@@ -8,25 +19,27 @@ area:
     - גבעתיים
   secondary:
     - תל אביב (יד אליהו)
-    - בני ברק גבול רמת גן
+    - בני ברק (גבול רמת גן)
 
 budget:
-  max_nis: 6500
-  preferred_nis: 6000
+  max_nis: 6500       # Hard ceiling — listings above this are rejected
+  preferred_nis: 6000 # Sweet spot — listings at or below get bonus points
 
 rooms:
-  preferred: 3
-  acceptable_min: 2.5
+  preferred: 3        # Ideal
+  acceptable_min: 2.5 # Only if the half-room is a real closed room (not open foyer/glass)
 
 move_window:
   target: "סוף יולי 2026"
+  # Entry before July = flagged unless explicitly flexible
+  # Immediate entry = hard red flag (even if "can renew in July")
   too_early_flag: "כניסה לפני יולי דורשת גמישות"
 
 priorities:
-  - קרבה לרכבת הקלה או תחבורה טובה
-  - שקט יחסי
-  - מתאים לזוג ולעבודה/יצירה מהבית
-  - מזגן בסלון ובחדרים חשובים
+  - קרבה לרכבת הקלה או תחבורה ציבורית טובה
+  - שקט יחסי (לא על כביש ראשי)
+  - מתאים לזוג + עבודה/יצירה מהבית
+  - מזגן בסלון ובחדרי שינה
   - חוזה לטווח ארוך / אופציה להארכה
 
 red_flags:
@@ -35,5 +48,7 @@ red_flags:
   - רעש כבד מכביש ראשי
   - דירה חשוכה מאוד
   - אין מזגן בחדר שינה
-  - חוזה קצר בלבד
+  - חוזה קצר בלבד (פחות משנה)
   - מחיר לא תואם מצב/מיקום
+  - תיווך במחיר מקסימלי
+  - חצי חדר פתוח (מבואה / קיר זכוכית) — לא נספר

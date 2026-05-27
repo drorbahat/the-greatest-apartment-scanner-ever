@@ -1,0 +1,74 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Smoke test (quick)
+        run: python3 scripts/smoke_test.py --quick --json
+
+      - name: Verify all scripts parse
+        run: |
+          python3 -c "
+          import ast, sys, pathlib
+          scripts = pathlib.Path('scripts')
+          errors = []
+          for f in sorted(scripts.glob('*.py')):
+              try:
+                  ast.parse(f.read_text())
+              except SyntaxError as e:
+                  errors.append(f'{f.name}: {e}')
+          if errors:
+              print('SYNTAX ERRORS:')
+              for e in errors:
+                  print(f'  ❌ {e}')
+              sys.exit(1)
+          print(f'✅ All {len(list(scripts.glob(\"*.py\")))} scripts parse OK')
+          "
+
+      - name: Verify imports (scripts)
+        run: |
+          python3 -c "
+          import sys, importlib
+          sys.path.insert(0, 'scripts')
+          modules = [
+              'facebook_url_utils', 'evidence_pack', 'events', 'scan_quality',
+              'user_rejections', 'llm_extract', 'ai_normalize_listing',
+              'evaluate_candidates', 'normalization_pipeline', 'normalization_audit',
+              'apartment_db', 'daily_scan',
+              'facebook_group_scan', 'facebook_group_feed_scan',
+              'facebook_feed_multi_scan', 'facebook_clean_posts',
+              'facebook_auto_triage', 'facebook_ai_triage_prepare',
+              'facebook_ai_triage_cache_update',
+          ]
+          failed = []
+          for m in modules:
+              try:
+                  importlib.import_module(m)
+              except Exception as e:
+                  failed.append(f'{m}: {e}')
+          if failed:
+              for f in failed:
+                  print(f'❌ {f}')
+              sys.exit(1)
+          print(f'✅ All {len(modules)} modules import OK')
+          "
+
+      - name: Run evaluation test
+        run: python3 tests/test_evaluate_candidates.py
