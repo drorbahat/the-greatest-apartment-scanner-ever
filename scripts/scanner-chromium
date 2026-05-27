@@ -1,20 +1,50 @@
 #!/usr/bin/env bash
+# Launch Chromium with Chrome DevTools Protocol (CDP) on the configured port.
+# Auto-detects the chromium binary from common locations.
+# Usage: ./scripts/scanner-chromium [extra chromium flags...]
 set -euo pipefail
+
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
 PROFILE="${SCANNER_BROWSER_PROFILE:-$ROOT/data/browser-profile}"
 PORT="${SCANNER_BROWSER_PORT:-9223}"
+
+# ── Find Chromium binary ──────────────────────────────────────────────────
+CHROMIUM_BIN="${CHROMIUM_BIN:-}"
+if [ -z "$CHROMIUM_BIN" ]; then
+    for cand in \
+        /usr/bin/chromium \
+        /usr/bin/chromium-browser \
+        /usr/bin/google-chrome \
+        /usr/bin/google-chrome-stable \
+        /snap/bin/chromium \
+        /Applications/Google\ Chrome.app/Contents/MacOS/Google\ Chrome; do
+        if [ -x "$cand" ]; then
+            CHROMIUM_BIN="$cand"
+            break
+        fi
+    done
+fi
+
+if [ -z "$CHROMIUM_BIN" ]; then
+    echo "❌ Chromium not found. Set CHROMIUM_BIN=/path/to/chromium" >&2
+    echo "   Install: apt install chromium-browser" >&2
+    exit 1
+fi
+
+echo "→ Chromium: $CHROMIUM_BIN (CDP port $PORT)" >&2
 mkdir -p "$PROFILE"
-exec /usr/bin/chromium \
-  --no-first-run \
-  --lang=he-IL \
-  --disable-dev-shm-usage \
-  --password-store=basic \
-  --user-data-dir="$PROFILE" \
-  --remote-debugging-port="$PORT" \
-  --disable-gpu \
-  --disable-software-rasterizer \
-  --disable-features=IsolateOrigins,site-per-process \
-  --disable-site-isolation-trials \
-  --no-sandbox \
-  --headless=new \
-  "$@"
+
+exec "$CHROMIUM_BIN" \
+    --no-first-run \
+    --lang=he-IL \
+    --disable-dev-shm-usage \
+    --password-store=basic \
+    --user-data-dir="$PROFILE" \
+    --remote-debugging-port="$PORT" \
+    --disable-gpu \
+    --disable-software-rasterizer \
+    --disable-features=IsolateOrigins,site-per-process \
+    --disable-site-isolation-trials \
+    --no-sandbox \
+    --headless=new \
+    "$@"
