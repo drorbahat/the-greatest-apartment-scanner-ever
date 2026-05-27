@@ -64,6 +64,28 @@ Present all 4 at once. But if the user asks "what does that mean?" — expand on
 
 > 💬 Tell user: "Start with Yad2-only (2 min setup), add Gemini/Facebook/Telegram later. Each component is independent."
 
+### Step 3.5 — Confirm skips before proceeding
+
+If user skipped components — do NOT proceed silently. Show a brief warning:
+
+```
+Before I configure — just so you know what you'd be missing:
+
+❌ Without Facebook — most apartments are in private groups.
+   (10 min setup: separate account + cookie file. Want me to explain?)
+
+❌ Without Gemini — filtering uses keywords instead of AI.
+   (Free, 3 min. Want me to explain?)
+
+❌ Without Telegram — reports stay on your computer, not your phone.
+   (2 min. Want me to explain?)
+
+If you're sure — I'll proceed.
+```
+
+If user says "no, proceed" → continue to Step 4.
+If user asks "wait, what does that mean?" → explain that component (Step 3).
+
 ### Step 4 — Apply changes
 Only AFTER user answers everything:
 - `criteria.yaml` — update
