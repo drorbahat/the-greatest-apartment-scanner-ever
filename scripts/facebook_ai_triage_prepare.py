@@ -225,7 +225,7 @@ def main():
         'cache_ttl_days': args.cache_ttl_days,
         'cache_pruned': pruned,
         'target_model': args.model,
-        'purpose': 'Semantic AI triage of cleaned Facebook apartment posts for Dror/Vanga apartment search',
+        'purpose': 'Semantic AI triage of cleaned Facebook apartment posts for apartment search',
         'criteria': CRITERIA,
         'prompt_out': str(args.prompt_out),
         'output_json': str(args.output_json),

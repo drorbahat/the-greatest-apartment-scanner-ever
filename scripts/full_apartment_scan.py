@@ -323,8 +323,8 @@ def run_collection(args: argparse.Namespace) -> pathlib.Path:
     _emit_event("scan_started", run_id=run_id, scan_date=scan_date)
 
     env = os.environ.copy()
-    env["YOGEV_SCAN_DATE"] = scan_date
-    env["YOGEV_RUN_ID"] = run_id
+    env["SCANNER_SCAN_DATE"] = scan_date
+    env["SCANNER_RUN_ID"] = run_id
     env = prepare_browser_env(env)
 
     try:
@@ -829,7 +829,7 @@ def dedupe_similar_entries(entries: list[dict[str, Any]]) -> list[dict[str, Any]
 def _is_user_rejected(item: dict[str, Any]) -> bool:
     """Return True when the item matches a permanent user rejection.
 
-    Final reports are read directly by Dror, not only through cron_load_results.
+    Final reports are read directly by the user, not only through cron_load_results.
     Keep this filter here too so rejected listings cannot reappear in the
     Markdown report or assistant_brief.
     """
@@ -1427,8 +1427,8 @@ def resume_run(args: argparse.Namespace) -> None:
     state.set_status("running_collection")
 
     env = os.environ.copy()
-    env["YOGEV_SCAN_DATE"] = scan_date
-    env["YOGEV_RUN_ID"] = run_id
+    env["SCANNER_SCAN_DATE"] = scan_date
+    env["SCANNER_RUN_ID"] = run_id
     env = prepare_browser_env(env)
 
     log_dir = run_dir / "logs"

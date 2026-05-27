@@ -19,7 +19,7 @@ from facebook_url_utils import classify_facebook_url, normalize_facebook_item_ur
 # ---------------------------------------------------------------------------
 
 def _use_normalized() -> bool:
-    return os.environ.get("YOGEV_AI_NORMALIZER_USE_IN_EVALUATOR") == "1"
+    return os.environ.get("SCANNER_AI_NORMALIZER_USE_IN_EVALUATOR") == "1"
 
 
 def _normalized_field(
@@ -162,7 +162,7 @@ _SUBLET_SIGNALS = [
 ]
 
 # Signals that the "half room" is not a real closed room.
-# Dror feedback: open foyer / glass-walled space does NOT count as 2.5 rooms.
+# Feedback: open foyer / glass-walled space does NOT count as 2.5 rooms.
 _OPEN_HALF_ROOM_SIGNALS = [
     "מבואה", "מבואה פתוחה", "מבואה גדולה", "מבואה מרווחת",
     "חלל פתוח", "חלל מואר", "זכוכית", "חלונות זכוכית",
@@ -311,7 +311,7 @@ def classify_entry(text: str, extracted_entry: str | None) -> dict[str, Any]:
     combined = f"{raw} {text or ''}".lower()
 
     # "immediate" also catches "כניסה מיידית + חידוש חוזה ביולי"
-    # Dror feedback: even if they say "can renew in July", immediate entry is a hard flag.
+    # Note: even if they say "can renew in July", immediate entry is a hard flag.
     for sig in _IMMEDIATE:
         if sig in combined:
             return {"entry_status": "immediate_hard_flag", "entry_raw": raw,
@@ -881,7 +881,7 @@ def load_raw_observations(run_dir: pathlib.Path | str, *, attach_normalized: boo
 def evaluate_run(run_dir: pathlib.Path | str, *, use_normalized: bool | None = None) -> dict[str, Any]:
     """Load raw observations, evaluate all, write artifacts.
 
-    use_normalized defaults from YOGEV_AI_NORMALIZER_USE_IN_EVALUATOR env var.
+    use_normalized defaults from SCANNER_AI_NORMALIZER_USE_IN_EVALUATOR env var.
     """
     if use_normalized is None:
         use_normalized = _use_normalized()

@@ -9,7 +9,7 @@ log = logging.getLogger('scanner.multi')
 
 # --- LLM Enhancement ---
 # After regex extraction, run LLM to fill in missing fields.
-# Controlled by --llm flag or YOGEV_LLM=1 env var.
+# Controlled by --llm flag or SCANNER_LLM=1 env var.
 _LLM_AVAILABLE = False
 try:
     import llm_extract
@@ -23,7 +23,7 @@ ART.mkdir(parents=True, exist_ok=True)
 
 DEFAULT_GROUPS = [
     # Deep daily scan: all historically accessible/productive apartment groups.
-    # Dror prefers maximum coverage every run because good apartments disappear daily.
+    # Maximum coverage every run because good apartments disappear daily.
     {'id': '1456553661265604', 'name': 'דירות בשושו רמת גן גבעתיים תל אביב - אין כניסה למתווכים'},
     {'id': '564985183576779', 'name': 'דירות להשכרה בגבעתיים'},
     {'id': '1380680752778760', 'name': 'דירות להשכרה בגבעתיים'},
@@ -245,8 +245,8 @@ async def main():
     ap.add_argument('--scrolls', type=int, default=8)
     ap.add_argument('--delay', type=float, default=2.5)
     ap.add_argument('--groups', nargs='*', help='Override group ids only')
-    ap.add_argument('--llm', action='store_true', default=bool(os.environ.get('YOGEV_LLM')),
-                    help='Enable LLM enhancement for missing fields (default: YOGEV_LLM env)')
+    ap.add_argument('--llm', action='store_true', default=bool(os.environ.get('SCANNER_LLM')),
+                    help='Enable LLM enhancement for missing fields (default: SCANNER_LLM env)')
     ap.add_argument('--out')
     ap.add_argument('--llm-checkpoint', help='Checkpoint path for incremental LLM enrichment output')
     args = ap.parse_args()

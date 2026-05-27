@@ -1,4 +1,4 @@
-# Yogev Apartment Scanner — dependencies
+# Apartment Scanner — dependencies
 
 # Core
 requests>=2.31

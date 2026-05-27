@@ -28,34 +28,34 @@ def _env_flag(name: str, default: str = "0") -> str:
 
 
 def normalization_enabled() -> bool:
-    return _env_flag("YOGEV_AI_NORMALIZER_ENABLED") == "1"
+    return _env_flag("SCANNER_AI_NORMALIZER_ENABLED") == "1"
 
 
 def normalization_shadow_enabled() -> bool:
-    return _env_flag("YOGEV_AI_NORMALIZER_SHADOW", "1") == "1"
+    return _env_flag("SCANNER_AI_NORMALIZER_SHADOW", "1") == "1"
 
 
 def _max_items() -> int:
     try:
-        return int(_env_flag("YOGEV_AI_NORMALIZER_MAX_ITEMS", "30"))
+        return int(_env_flag("SCANNER_AI_NORMALIZER_MAX_ITEMS", "30"))
     except ValueError:
         return 30
 
 
 def _use_llm() -> bool:
-    return _env_flag("YOGEV_AI_NORMALIZER_USE_LLM", "0") == "1"
+    return _env_flag("SCANNER_AI_NORMALIZER_USE_LLM", "0") == "1"
 
 
 def _max_text_chars() -> int:
     try:
-        return int(_env_flag("YOGEV_AI_NORMALIZER_MAX_TEXT_CHARS", "6000"))
+        return int(_env_flag("SCANNER_AI_NORMALIZER_MAX_TEXT_CHARS", "6000"))
     except ValueError:
         return 6000
 
 
 def _cache_path() -> pathlib.Path:
     raw = _env_flag(
-        "YOGEV_AI_NORMALIZER_CACHE",
+        "SCANNER_AI_NORMALIZER_CACHE",
         "/app/artifacts/normalization/normalizer_cache.json",
     )
     return pathlib.Path(raw)

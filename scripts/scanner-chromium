@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 set -euo pipefail
 ROOT="$(cd "$(dirname "${BASH_SOURCE[0]}")/.." && pwd)"
-PROFILE="${YOGEV_BROWSER_PROFILE:-$ROOT/data/browser-profile}"
-PORT="${YOGEV_BROWSER_PORT:-9223}"
+PROFILE="${SCANNER_BROWSER_PROFILE:-$ROOT/data/browser-profile}"
+PORT="${SCANNER_BROWSER_PORT:-9223}"
 mkdir -p "$PROFILE"
 exec /usr/bin/chromium \
   --no-first-run \

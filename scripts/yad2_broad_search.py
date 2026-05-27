@@ -4,8 +4,8 @@ from datetime import datetime
 import websockets
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-RUN_ID = os.environ.get('YOGEV_RUN_ID')
-RUN_DATE = os.environ.get('YOGEV_SCAN_DATE') or datetime.now().strftime('%Y-%m-%d')
+RUN_ID = os.environ.get('SCANNER_RUN_ID')
+RUN_DATE = os.environ.get('SCANNER_SCAN_DATE') or datetime.now().strftime('%Y-%m-%d')
 # Use run-specific directory if available, otherwise fall back to date-based directory
 if RUN_ID:
     ART = ROOT / "artifacts" / f"broad_search_{RUN_ID}"
@@ -279,7 +279,7 @@ def pick_candidates(links, target):
         rooms=l.get('feed_rooms')
         if rooms and rooms < 2.5:
             continue
-        # Dror's hard budget is an upper ceiling (~6,500 NIS), not a minimum.
+        # Hard budget is an upper ceiling (~6,500 NIS), not a minimum.
         if price and price > MAX_BUDGET:
             continue
         if target.get('rare_filter') and not any(t in txt for t in RARE_TERMS):

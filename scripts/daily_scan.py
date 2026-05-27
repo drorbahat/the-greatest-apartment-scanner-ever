@@ -199,7 +199,7 @@ def run_ai_triage_batches(clean_json_path, model=DEFAULT_MODEL, skip_ai=False):
         'source': str(clean_json_path),
         'cache': str(ART / 'triage_cache.json'),
         'target_model': model,
-        'purpose': 'Semantic AI triage of cleaned Facebook apartment posts for Dror/Vanga apartment search',
+        'purpose': 'Semantic AI triage of cleaned Facebook apartment posts for apartment search',
         'criteria': first_data.get('criteria') or {},
         'prompt_out': str(last_prompt_path),
         'output_json': str(last_output_json),

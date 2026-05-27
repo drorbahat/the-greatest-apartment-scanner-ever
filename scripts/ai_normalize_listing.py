@@ -430,7 +430,7 @@ def _normalize_with_llm(pack: dict[str, Any], *, dry_run: bool = False) -> dict[
     """Normalize using Gemini 3.1 Flash-Lite Preview.
 
     Reuses the same backend pattern as llm_extract.py:
-    - Loads GEMINI_API_KEY from env / ~/.hermes/.env
+    - Loads GEMINI_API_KEY from the environment
     - Uses google.generativeai with system_instruction + JSON mime_type
     - Retries with exponential backoff
     """
@@ -465,8 +465,8 @@ def _normalize_with_llm(pack: dict[str, Any], *, dry_run: bool = False) -> dict[
     import time
     import random
 
-    max_retries = int(os.environ.get("YOGEV_LLM_MAX_RETRIES", "2"))
-    retry_delay = float(os.environ.get("YOGEV_LLM_RETRY_DELAY", "2"))
+    max_retries = int(os.environ.get("SCANNER_LLM_MAX_RETRIES", "2"))
+    retry_delay = float(os.environ.get("SCANNER_LLM_RETRY_DELAY", "2"))
 
     for attempt in range(max_retries + 1):
         try:
@@ -595,7 +595,7 @@ def _init_gemini_backend():
 
         system_prompt = load_prompt()
         model_name = os.environ.get(
-            "YOGEV_GEMINI_MODEL", "gemini-3.1-flash-lite-preview"
+            "SCANNER_GEMINI_MODEL", "gemini-3.1-flash-lite-preview"
         )
         # Resolve legacy aliases
         aliases = {

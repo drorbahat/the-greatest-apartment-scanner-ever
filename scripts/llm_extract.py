@@ -40,16 +40,16 @@ _LEGACY_GEMINI_MODEL_ALIASES = {
 }
 
 def _resolve_gemini_model_name() -> str:
-    model = os.environ.get('YOGEV_GEMINI_MODEL', 'gemini-3.1-flash-lite-preview')
+    model = os.environ.get('SCANNER_GEMINI_MODEL', 'gemini-3.1-flash-lite-preview')
     return _LEGACY_GEMINI_MODEL_ALIASES.get(model, model)
 
 GEMINI_MODEL_NAME = _resolve_gemini_model_name()
 
-MAX_RETRIES = int(os.environ.get('YOGEV_LLM_MAX_RETRIES', '2'))
-RETRY_DELAY = float(os.environ.get('YOGEV_LLM_RETRY_DELAY', '2'))
-CALL_DELAY = float(os.environ.get('YOGEV_LLM_CALL_DELAY', '0.8'))  # conservative rate limiting
+MAX_RETRIES = int(os.environ.get('SCANNER_LLM_MAX_RETRIES', '2'))
+RETRY_DELAY = float(os.environ.get('SCANNER_LLM_RETRY_DELAY', '2'))
+CALL_DELAY = float(os.environ.get('SCANNER_LLM_CALL_DELAY', '0.8'))  # conservative rate limiting
 MAX_OUTPUT_TOKENS=2000  # Gemini sometimes needs more for full JSON response
-LLM_CACHE_PATH = pathlib.Path(os.environ.get('YOGEV_LLM_CACHE', '/app/artifacts/facebook/llm_extract_cache.json'))
+LLM_CACHE_PATH = pathlib.Path(os.environ.get('SCANNER_LLM_CACHE', '/app/artifacts/facebook/llm_extract_cache.json'))
 _llm_cache = None
 
 SYSTEM_PROMPT = """You are an Israeli apartment rental listing parser.

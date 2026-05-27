@@ -18,8 +18,8 @@ services:
     env_file:
       - .env
     environment:
-      - YOGEV_PROJECT_ROOT=/app
-      - YOGEV_BROWSER_PORT=9223
+      - SCANNER_PROJECT_ROOT=/app
+      - SCANNER_BROWSER_PORT=9223
     shm_size: 256m
     healthcheck:
       test: ["CMD", "curl", "-sf", "http://127.0.0.1:9223/json/version"]

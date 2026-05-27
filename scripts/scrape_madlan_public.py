@@ -2,7 +2,7 @@
 """Scrape Madlan public apartment listings for Apartment Scanner.
 
 Uses the visible Chromium session via CDP. When Madlan asks for
-verification, the scraper stops detail enrichment and leaves a tab open so Dror
+verification, the scraper stops detail enrichment and leaves a tab open so the user
 can solve the CAPTCHA manually; it does not try to bypass the challenge.
 Falls back to plain urllib if CDP is not available.
 
@@ -18,8 +18,8 @@ from collections import Counter
 from datetime import datetime
 
 ROOT = pathlib.Path(__file__).resolve().parents[1]
-RUN_ID = os.environ.get('YOGEV_RUN_ID')
-RUN_DATE = os.environ.get('YOGEV_SCAN_DATE') or datetime.now().strftime('%Y-%m-%d')
+RUN_ID = os.environ.get('SCANNER_RUN_ID')
+RUN_DATE = os.environ.get('SCANNER_SCAN_DATE') or datetime.now().strftime('%Y-%m-%d')
 # Use run-specific directory if available, otherwise fall back to date-based directory
 if RUN_ID:
     ART = ROOT / 'artifacts' / f'broad_search_{RUN_ID}'
@@ -366,7 +366,7 @@ def clear_madlan_block_state(all_runs=False):
 
     By default clears the current run/date artifact path. With all_runs=True,
     clears Madlan cooldown files from all broad_search_* artifact dirs, which is
-    useful when the blocked run used a run-specific YOGEV_RUN_ID.
+    useful when the blocked run used a run-specific SCANNER_RUN_ID.
     """
     paths = [MADLAN_BLOCK_STATE_PATH]
     if all_runs:
@@ -462,7 +462,7 @@ async def _read_html_from_page_ws(page_ws_url):
 async def fetch_existing_madlan_tab_html(url):
     """Prefer a human-opened Madlan tab for this listing when available.
 
-    If Dror opened/verified a listing manually, that tab often has a valid
+    If a listing was opened/verified manually, that tab often has a valid
     session while a newly-created automated tab may receive a CAPTCHA.
     """
     try:

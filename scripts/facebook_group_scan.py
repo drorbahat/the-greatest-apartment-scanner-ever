@@ -3,7 +3,7 @@
 
 Uses the already-open dedicated Chromium profile/CDP session. It does not join groups,
 post, comment, message, or bypass access controls. If Facebook asks for human input,
-stop and let Dror handle it manually in the browser.
+stop and handle it manually in the browser.
 
 Example:
   python3 scripts/facebook_group_scan.py --group 564985183576779 --query 6500 --scrolls 3
