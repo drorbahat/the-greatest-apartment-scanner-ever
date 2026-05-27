@@ -5,7 +5,7 @@ This is the bridge between non-AI scraping/cleaning and a cheap LLM sub-agent.
 It reads `facebook_clean_posts.py` output, skips posts already present in a
 persistent triage cache, and writes a small JSON input plus a ready-to-copy prompt.
 
-Default model target: glm-5.1 via Hermes/Z.ai.
+Default model target: glm-5.1 via AI agent / Z.ai.
 """
 import argparse, hashlib, json, pathlib, re
 from datetime import datetime

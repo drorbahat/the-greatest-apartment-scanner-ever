@@ -229,7 +229,7 @@ def cdp_ready() -> bool:
 
 
 def prepare_browser_env(env: dict[str, str]) -> dict[str, str]:
-    """Ensure GUI browser env works from cron/Hermes shells.
+    """Ensure GUI browser env works from cron/agent shells.
 
     Chrome Remote Desktop provides X on :20, but non-interactive shells may have
     DISPLAY set to an empty string. os.environ.get("DISPLAY", ":20") preserves
